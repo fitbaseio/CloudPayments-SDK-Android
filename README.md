@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/cloudpayments/CloudPayments-SDK-Android.svg)](https://jitpack.io/#cloudpayments/CloudPayments-SDK-Android)
 
-## CloudPayments SDK for Android 
+## CloudPayments SDK for Android
 
 CloudPayments SDK позволяет интегрировать прием платежей в мобильные приложение для платформы Android.
 
@@ -17,7 +17,7 @@ repositories {
 ```
 В build.gradle уровня приложения добавить зависимость
 ```
-implementation 'com.github.cloudpayments:CloudPayments-SDK-Android:latest-version'
+implementation 'com.github.cloudpayments:CloudPayments-SDK-Android:1.0.2'
 ```
 ### Структура проекта:
 
@@ -27,7 +27,7 @@ implementation 'com.github.cloudpayments:CloudPayments-SDK-Android:latest-versio
 
 ### Возможности CloudPayments SDK:
 
-Вы можете использовать SDK одним из трех способов: 
+Вы можете использовать SDK одним из трех способов:
 * использовать стандартную платежную форму Cloudpayments
 * реализовать свою платежную форму с использованием функций CloudpaymentsApi без вашего сервера
 * реализовать свою платежную форму, сформировать криптограмму и отправить ее на свой сервер
@@ -46,10 +46,18 @@ val paymentData = PaymentData(Constants.merchantPublicId, "10.00", "RUB")
 val configuration = PaymentConfiguration(paymentData)
 ```
 
-3. Вызовите форму оплаты. При вызове формы передайте requestCode и activity, в onActivityResult которого получите результат оплаты (Activity.RESULT_OK)
+3. Вызовите форму оплаты. При вызове формы передайте requestCode и activity, в onActivityResult которого получите результат оплаты
 
 ```
 CloudpaymentsSDK.getInstance().start(configuration, this, REQUEST_CODE_PAYMENT)
+
+val transactionId = data?.getIntExtra(CloudpaymentsSDK.IntentKeys.TransactionId.name, 0)
+val transactionStatus = data?.getSerializableExtra(CloudpaymentsSDK.IntentKeys.TransactionStatus.name) as? CloudpaymentsSDK.TransactionStatus
+
+if (transactionStatus != null) {
+    // Значит платеж завершился (успешно или ошибкой)
+}
+
 ```
 
 ### Использование вашей платежной формы с использованием функций CloudpaymentsApi:
@@ -101,7 +109,7 @@ override fun onAuthorizationFailed(error: String?) {
 
 [Документация](https://developers.google.com/payments/setup)
 
-#### Включение Google Pay 
+#### Включение Google Pay
 
 В файл build.gradle подключите следующую зависимость:
 
