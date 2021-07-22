@@ -11,7 +11,7 @@ class AuthenticationInterceptor (private val publicId: String) : Interceptor {
 	@Throws(IOException::class)
 	override fun intercept(chain: Interceptor.Chain): Response {
 		val original: Request = chain.request()
-		val originalHttpUrl: HttpUrl = original.url
+		val originalHttpUrl: HttpUrl = original.url()
 
 		val builder = originalHttpUrl.newBuilder()
 		builder.addQueryParameter("publicId", publicId)
